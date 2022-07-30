@@ -211,22 +211,23 @@ func (p *RSSFeedPlugin) processAtomSubscription(subscription *Subscription) erro
 		if config.FormatTitle {
 			post = post + "##### "
 		}
-		post = post + newFeed.Title + "\n"
+		// post = post + newFeed.Title + "\n"
 
 		if config.ShowAtomItemTitle {
 			if config.FormatTitle {
 				post = post + "###### "
 			}
-			post = post + item.Title + "\n"
-		}
-
-		if config.ShowAtomLink {
-			for _, link := range item.Link {
-				if link.Rel == "alternate" {
-					post = post + strings.TrimSpace(link.Href) + "\n"
+			if config.ShowAtomLink {
+				for _, link := range item.Link {
+					// if link.Rel == "alternate" {
+						post = post + "[" + item.Title + "](" + strings.TrimSpace(link.Href) + ")\n"
+					// }
 				}
+			}else{
+				post = post + item.Title + "\n"
 			}
 		}
+
 
 		if config.ShowSummary {
 			if !tryParseRichNode(item.Summary, &post) {
@@ -289,3 +290,4 @@ func (p *RSSFeedPlugin) createBotPost(channelID string, message string, postType
 
 	return nil
 }
+
